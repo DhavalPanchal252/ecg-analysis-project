@@ -1,0 +1,20 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Project data (kept locally, not on GitHub)
+ECG Dataset/
+final_check_output/csv_data/
+final_check_output/npz_data/
+
+# Optional: large outputs
+*.npz
+*.npy
