@@ -1,6 +1,8 @@
 # ECG Analysis – Heartbeat Classification
 
-![ECG-INTEX Pipeline](images/pipeline.png)
+<p align="center">
+  <img src="images/pipeline.png" width="900"/>
+</p>
 
 This repository contains an end‑to‑end ECG analysis project that processes raw electrocardiogram (ECG) signals and summarizes them into features and CSV reports. The goal is to distinguish between different cardiac conditions using 12‑lead ECG and extended lead II recordings.
 
