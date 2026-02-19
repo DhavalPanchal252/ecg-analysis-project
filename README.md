@@ -1,114 +1,187 @@
-# ECG Analysis – Heartbeat Classification
+# ECG-INTEX: ECG Image Digitization & Heartbeat Classification
 
 <p align="center">
-  <img src="images/pipeline.png" width="900"/>
+  <img src="images/pipeline.png" width="900" />
 </p>
 
-This repository contains an end‑to‑end ECG analysis project that processes raw electrocardiogram (ECG) signals and summarizes them into features and CSV reports. The goal is to distinguish between different cardiac conditions using 12‑lead ECG and extended lead II recordings.
+An end-to-end ECG image digitization and classification framework for detecting cardiac conditions from 12-lead ECG recordings and extended Lead II rhythm signals.
 
-The project is designed as a **portfolio‑ready** piece: someone visiting the repo (e.g., a recruiter) can quickly understand the problem, data, and analysis workflow.
-
----
-
-## Problem Statement
-
-Given ECG recordings from multiple subjects, the task is to analyze the signals and support classification into the following categories:
+This project processes ECG data, extracts discriminative time-domain features, and applies machine learning models with ensemble learning to classify heart conditions into:
 
 - **Normal Person**
 - **Abnormal Heartbeat**
 - **History of Myocardial Infarction (MI)**
 
-The project extracts meaningful features from ECG signals (time‑domain statistics, waveform characteristics, etc.) and compiles them into structured CSV summaries for further analysis or model building.
+It is designed as a research-oriented, portfolio-ready project demonstrating the complete pipeline from signal processing to model evaluation.
+
+---
+
+## Problem Statement
+
+Electrocardiograms (ECGs) are widely used to assess cardiac health, but interpreting multi-lead ECG recordings manually can be time-consuming and error-prone.
+
+This project aims to:
+
+- Digitize and process ECG recordings
+- Extract meaningful statistical features
+- Train and evaluate classification models
+- Distinguish between Normal, Abnormal, and MI conditions
+
+The final outputs include structured feature summaries and classification results suitable for machine learning experimentation and academic research.
+
+---
+
+## System Architecture
+
+The framework consists of the following stages:
+
+1. Data acquisition (12-lead ECG + extended Lead II)
+2. Signal preprocessing
+3. Segmentation
+4. Waveform digitization
+5. Feature extraction
+6. Model training and validation
+n+7. Ensemble classification
+
+### Extracted Time-Domain Features
+
+- Mean Absolute Value (MAV)
+- Root Mean Square (RMS)
+- Zero Crossings (ZC)
+- Slope Sign Changes (SSC)
+- Variance (VAR)
+- DASDV
+- Average Amplitude Change (AAC)
+- Skewness
+- Kurtosis
+
+---
+
+## Model Training & Evaluation
+
+### Models Used
+
+- Support Vector Machines (SVM)
+- Random Forest
+- XGBoost
+- LightGBM
+- CatBoost
+- Deep Neural Network (DNN)
+
+### Evaluation Strategy
+
+- Stratified 10-fold cross-validation
+- Metrics: Accuracy, Precision, Recall, F1-score
+
+### Results
+
+| Dataset Type    | Accuracy                      |
+|-----------------|-------------------------------|
+| 12-Lead ECG     | **95.7%** (Voting Ensemble)   |
+| Rhythm Lead II  | **87.3%**                     |
+
+Key observations:
+
+- Ensemble models outperformed individual classifiers.
+- Gradient boosting algorithms showed strong stability.
+- Multi-lead ECG features provided higher discriminative power than single-lead rhythm data.
 
 ---
 
 ## Repository Structure
 
-- `code.ipynb` – Main analysis notebook: loading ECG data, preprocessing, feature extraction, and generation of summary tables.
-- `final_check_output/`
-	- `FINAL_COMBINED_SUMMARY.csv` – Combined overview of all processed ECG records.
-	- `summary_12_leads_complete.csv` – Summary features calculated from 12‑lead ECG signals.
-	- `summary_extended_lead_II_complete.csv` – Summary features calculated from extended lead II recordings.
-- `ECG Dataset/` – Raw ECG data (kept locally and **ignored in Git** to keep the repository lightweight).
-- `requirements.txt` – Python dependencies.
-- `.gitignore` – Excludes large datasets and intermediate artifacts from version control.
+```text
+├── code.ipynb
+├── final_check_output/
+│   ├── FINAL_COMBINED_SUMMARY.csv
+│   ├── summary_12_leads_complete.csv
+│   └── summary_extended_lead_II_complete.csv
+├── images/
+│   └── pipeline.png
+├── paper/
+│   └── ECG-INTEX.pdf
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
 
-> Note: Only final summary CSVs and code are tracked; large per‑record CSVs and `.npz` files are ignored.
+### Notes
 
----
-
-## Technical Overview
-
-At a high level, the notebook performs the following steps:
-
-1. **Data Loading** – Read ECG recordings from local folders (12‑lead ECG and extended lead II).
-2. **Preprocessing** – Basic cleaning steps such as handling missing values and preparing signals for analysis.
-3. **Feature Extraction** – Compute descriptive statistics and signal‑based features from each recording.
-4. **Aggregation** – Combine per‑record features into consolidated summary CSVs under `final_check_output/`.
-
-These outputs can then be used for:
-
-- Exploratory data analysis (EDA) on ECG features.
-- Prototyping classification models for cardiac condition prediction.
+- The `ECG Dataset/` directory is not included in the repository.
+- Large raw ECG files and intermediate artifacts are excluded using `.gitignore`.
+- Only lightweight outputs and final summaries are tracked.
 
 ---
 
 ## Setup
 
-1. **Clone the repository**
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/DhavalPanchal252/ecg-analysis-project.git
 cd ecg-analysis-project
 ```
 
-2. **Create and activate a Python virtual environment** (recommended)
+### 2. Create Virtual Environment (Recommended)
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Linux/macOS
-.
-venv\Scripts\activate     # Windows PowerShell
+source .venv/bin/activate   # Linux/macOS
+.venv\\Scripts\\activate      # Windows PowerShell
 ```
 
-3. **Install dependencies**
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Add the ECG dataset (not included in the repo)**
+### 4. Add ECG Dataset (Not Included)
 
-Place the original ECG folders under `ECG Dataset/` following the structure you used during development (e.g., `Abnormal heartbeat/`, `History of MI/`, `Normal Person/`).
+Place your dataset locally under:
+
+```text
+ECG Dataset/
+    ├── Abnormal heartbeat/
+    ├── History of MI/
+    └── Normal Person/
+```
 
 ---
 
 ## Usage
 
 1. Open `code.ipynb` in Jupyter Notebook or VS Code.
-2. Verify that the `ECG Dataset/` directory is present locally with the required subfolders.
-3. Run the notebook cells in order to:
-	 - Load and preprocess ECG data.
-	 - Extract features from 12‑lead and extended lead II recordings.
-	 - Generate and update the summary CSV files in `final_check_output/`.
-
-You can then load the generated CSVs into Python, Excel, or any analytics tool for further analysis and visualization.
+2. Ensure the `ECG Dataset/` folder exists locally with the required subfolders.
+3. Run the notebook sequentially to:
+   - Load ECG data
+   - Extract features
+   - Generate summary CSV files
+   - Train and evaluate classification models
 
 ---
 
-## Notes
+## Research Documentation
 
-- The raw ECG datasets under `ECG Dataset/` and large intermediate CSV/NPZ files are **not** tracked in Git.
-- Only lightweight artifacts (code, summaries, and configuration files) are included so the repository is easy to clone and review.
-- If you add new scripts (e.g., for model training), consider placing them in a `src/` folder and updating this README accordingly.
+This project is supported by a detailed technical report available in:
+
+- `paper/ECG-INTEX.pdf`
+
+The report describes the methodology, feature extraction process, and experimental evaluation in depth.
 
 ---
 
 ## Possible Extensions
 
-- Build and compare machine learning models (e.g., logistic regression, random forest, gradient boosting, or deep learning) using the extracted features.
-- Perform additional signal processing (filtering, peak detection, HRV analysis).
-- Add visualizations of ECG waveforms and feature distributions.
-- Automate the pipeline as a Python package or command‑line tool.
+- Implement deep learning models (1D-CNN / 2D-CNN).
+- Deploy a Streamlit app for live ECG classification.
+- Add feature importance and model explainability (e.g., SHAP).
+- Convert the pipeline into a modular Python package.
 
-These extensions can strengthen the project further for academic or portfolio use.
+---
+
+## Author
+
+**Dhaval Panchal**  
+M.Tech – Software Systems  
+Dhirubhai Ambani University
